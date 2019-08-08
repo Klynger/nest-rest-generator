@@ -119,9 +119,9 @@ It gonna return the code of a service file as a string. This is an example of a 
 
 #### Generate model
 
-`POST /nest-rest-generator/service`
+`POST /nest-rest-generator/model`
 
-It gonna return the code of a service file as a string. This is an example of a body to send:
+It gonna return the code of a model file as a string. This is an example of a body to send:
 
 ```json
 {
