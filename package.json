@@ -1,6 +1,6 @@
 {
   "name": "nest-rest-generator",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "This app is responsable to generate boilerplate code to a NestJS REST API in Typescript",
   "author": "Rafael Klynger",
   "license": "MIT",
