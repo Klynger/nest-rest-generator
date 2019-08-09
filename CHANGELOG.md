@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Subscribe to the core webhook when the app is initialized.
+
 ## [0.1.2] - 2019-08-08
 
 ### Changed
