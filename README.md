@@ -10,19 +10,20 @@
 
 ## Summary
 
+- [Summary](#summary)
 - [Description](#description)
-- [Running Things](#running-things)
+- [Running things](#running-things)
   - [Installation](#installation)
-  - [Running the App](#running-the-app)
+  - [Running the app](#running-the-app)
   - [Test](#test)
 - [License](#license)
-- [API Description](#api-description)
-  - [Standard Routes](#standard-routes)
+- [API description](#api-description)
+  - [Standard routes](#standard-routes)
     - [Whoami](#whoami)
-  - [Specific Routes](#specific-routes)
-    - [Generate Controller](#generate-controller)
-    - [Generate Service](#generate-service)
-    - [Generate Model](#generate-model)
+  - [Specific routes](#specific-routes)
+    - [Generate controller](#generate-controller)
+    - [Generate service](#generate-service)
+    - [Generate model](#generate-model)
 
 ## Description
 
@@ -67,13 +68,13 @@ $ yarn test:cov
   Nest Rest Generator is [MIT licensed](LICENSE).
 
 ## API description
-  Summary of the available routes that you can access. All the routes must start with the app name (`/nest-rest-generator`).
+  Summary of the available routes that you can access.
 
 ### Standard routes
 
 #### Whoami
 
-`GET /nest-rest-generator/whoami`
+`GET /whoami`
 
 Returns a JSON specifying what layers of a REST API for a Modal the app can generate and which type of API this is. Example of response:
 
@@ -91,13 +92,13 @@ Returns a JSON specifying what layers of a REST API for a Modal the app can gene
 
 #### Generate controller
 
-`POST /nest-rest-generator/controller`
+`POST /controller`
 
 It gonna return the code of a controller file as a string. This is an example of a body to send:
 
 ```json
 {
-  "implementedMethods": ["POST", "GET", "PUT"],
+  "verbs": ["POST", "GET", "PUT"],
   "entityName": "User",
   "layerBellow": "service"
 }
@@ -105,7 +106,7 @@ It gonna return the code of a controller file as a string. This is an example of
 
 #### Generate service
 
-`POST /nest-rest-generator/service`
+`POST /service`
 
 It gonna return the code of a service file as a string. This is an example of a body to send:
 
@@ -119,7 +120,7 @@ It gonna return the code of a service file as a string. This is an example of a 
 
 #### Generate model
 
-`POST /nest-rest-generator/model`
+`POST /model`
 
 It gonna return the code of a model file as a string. This is an example of a body to send:
 
