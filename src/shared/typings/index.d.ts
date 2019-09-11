@@ -4,7 +4,7 @@ export {};
 
 declare global {
 
-  enum Layers {
+  enum Methods {
     POST = 'POST',
     GET = 'GET',
   }

@@ -1,14 +1,14 @@
 import * as Yup from 'yup';
-import { LayersType, Layers, VerbsType, Verbs } from '../constants';
+import { Layers, Verbs, Verb, Layer } from '../constants';
 
 export class CreateControllerDto {
-  verbs: keyof VerbsType[];
+  implementedMethods: Verb[];
   entityName: string;
-  layerBellow?: keyof LayersType;
+  layerBellow?: Layer;
 }
 
 export const schema = Yup.object({
-  verbs: Yup.array().of(Yup.mixed().oneOf(Object.keys(Verbs))).required(),
+  implementedMethods: Yup.array().of(Yup.mixed().oneOf(Object.keys(Verbs))).required(),
   entityName: Yup.string().required(),
   layerBellow: Yup.mixed().oneOf(Object.keys(Layers)),
 });
