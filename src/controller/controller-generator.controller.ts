@@ -8,7 +8,6 @@ export class ControllerGenerator {
 
   @Post()
   public createController(@Body() createControllerDto: CreateControllerDto) {
-    console.log({ createControllerDto });
-    return this.controllerGeneratorService.generateController();
+    return this.controllerGeneratorService.generateController(createControllerDto);
   }
 }
