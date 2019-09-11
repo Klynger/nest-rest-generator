@@ -98,7 +98,7 @@ It gonna return the code of a controller file as a string. This is an example of
 
 ```json
 {
-  "verbs": ["POST", "GET", "PUT"],
+  "implementedMethods": ["POST", "GET", "PUT"],
   "entityName": "User",
   "layerBellow": "service"
 }

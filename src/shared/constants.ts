@@ -35,16 +35,19 @@ export enum Verb {
   POST = 'POST',
   GET = 'GET',
   PUT = 'PUT',
+  DELETE = 'DELETE',
 }
 
 export interface VerbsType {
   POST: 'POST';
   GET: 'GET';
   PUT: 'PUT';
+  DELETE: 'DELETE';
 }
 
 export const Verbs: VerbsType = {
   POST: 'POST',
   GET: 'GET',
   PUT: 'PUT',
+  DELETE: 'DELETE',
 };
