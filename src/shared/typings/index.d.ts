@@ -7,6 +7,7 @@ declare global {
   enum Methods {
     POST = 'POST',
     GET = 'GET',
+    PUT = 'PUT',
   }
 
   interface IGenerator {

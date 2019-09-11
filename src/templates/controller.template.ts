@@ -1,6 +1,6 @@
 import { fromPascalToCamel } from '../utils';
 import { Layer, Verb, ImportType } from '../shared/constants';
-import { pipe, map, flatten } from 'ramda';
+import { pipe, reduce, flatten } from 'ramda';
 import { generateConstructor, getDefaultLayerBellow, getIdentation, DEFAULT_INNER_CLASS_TABS } from './index';
 import { FileImport, LibImport, Import } from './imports.template';
 
@@ -21,21 +21,46 @@ function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
           namePascalCase: `Create${entityName}`,
           sameFolder: false,
         }];
+      case Verb.PUT:
+        return [layerBellowImport, {
+          importType: ImportType.dto,
+          namePascalCase: `Update${entityName}`,
+          sameFolder: false,
+        }];
     }
   };
 }
 
-function getCommonImportsFromMethod(v: Verb) {
-  switch (v) {
+function getCommonImportsFromMethod(acc: Record<string, boolean>, cur: Verb) {
+  switch (cur) {
     case Verb.GET:
-      return ['Get', 'Param'];
+      return {
+        ...acc,
+        Get: true,
+        Param: true,
+      };
     case Verb.POST:
-      return ['Post', 'Body'];
+      return {
+        ...acc,
+        Post: true,
+        Body: true,
+      };
+    case Verb.PUT:
+      return {
+        ...acc,
+        Put: true,
+        Body: true,
+        Param: true,
+      };
   }
 }
 
+function getKeys(obj: Record<string, boolean>) {
+  return Object.keys(obj);
+}
+
 export function discoverControllerImports(entityName: string, implementedMethods: Verb[], layerBellow: Layer): Import[] {
-  const names = pipe(map(getCommonImportsFromMethod), flatten)(implementedMethods).concat('Controller');
+  const names = pipe(reduce(getCommonImportsFromMethod, {}), getKeys)(implementedMethods).concat('Controller');
   const commonImports: LibImport = {
     lib: '@nestjs/common',
     names,
@@ -70,6 +95,8 @@ function getMethodName(verb: Verb, entityName: string) {
       return `get${entityName}`;
     case Verb.POST:
       return `create${entityName}`;
+    case Verb.PUT:
+      return `update${entityName}`;
     default:
       return '';
   }
@@ -94,7 +121,20 @@ export function generateMethod(verb: Verb, entityName: string, tabSize: number, 
       return generateGet(entityName, tabSize, layerBellow);
     case Verb.POST:
       return generatePost(entityName, tabSize, layerBellow);
+    case Verb.PUT:
+      return geeneratePut(entityName, tabSize, layerBellow);
   }
+}
+
+export function geeneratePut(entityName: string, tabSize: number, layerBellow?: Layer) {
+  const returnLine = getReturnLine(Layer.controller, entityName, Verb.PUT, `id, update${entityName}Dto`, layerBellow);
+  const outerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
+  const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
+
+  return `${outerIdentationSpaces}@Put()
+${outerIdentationSpaces}update${entityName}(@Body() update${entityName}Dto: Update${entityName}Dto, @Param('id') id: string) {
+${innerIdentationSpaces}${returnLine}
+${outerIdentationSpaces}}`;
 }
 
 export function generateGet(entityName: string, tabSize: number, layerBellow?: Layer) {
