@@ -27,6 +27,8 @@ function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
           namePascalCase: `Update${entityName}`,
           sameFolder: false,
         }];
+      case Verb.DELETE:
+        return [layerBellowImport];
     }
   };
 }
@@ -51,6 +53,14 @@ function getCommonImportsFromMethod(acc: Record<string, boolean>, cur: Verb) {
         Put: true,
         Body: true,
         Param: true,
+      };
+    case Verb.DELETE:
+      return {
+        ...acc,
+        Delete: true,
+        Param: true,
+        HttpCode: true,
+        HttpStatus: true,
       };
   }
 }
@@ -97,22 +107,31 @@ function getMethodName(verb: Verb, entityName: string) {
       return `create${entityName}`;
     case Verb.PUT:
       return `update${entityName}`;
+    case Verb.DELETE:
+      return `delete${entityName}`;
     default:
       return '';
   }
 }
 
-function getReturnLine(layer: Layer, entityName: string, verb: Verb, params: string = '', layerBellow?: Layer) {
+function getInnerMethodContent(layer: Layer, entityName: string, verb: Verb, params: string = '', layerBellow?: Layer, shouldReturn: boolean = true) {
   if (!layerBellow) {
-    return getReturnLine(layer, entityName, verb, params, getDefaultLayerBellow(layer));
+    return getInnerMethodContent(layer, entityName, verb, params, getDefaultLayerBellow(layer));
   }
+
   const entityNameCamelCase = fromPascalToCamel(entityName);
+  const returnText = `${shouldReturn ? 'return ' : ''}`;
+
   switch (layerBellow) {
     case Layer.service:
-      return `return this.${entityNameCamelCase}Service.${getMethodName(verb, entityName)}(${params});`;
+      return `${returnText}this.${entityNameCamelCase}Service.${getMethodName(verb, entityName)}(${params});`;
     default:
-      return `return 'default value goes here';`;
+      return `${returnText}default value goes here;`;
   }
+}
+
+function getReturnLine(layer: Layer, entityName: string, verb: Verb, params: string = '', layerBellow?: Layer) {
+  return getInnerMethodContent(layer, entityName, verb, params, layerBellow);
 }
 
 export function generateMethod(verb: Verb, entityName: string, tabSize: number, layerBellow?: Layer) {
@@ -122,16 +141,30 @@ export function generateMethod(verb: Verb, entityName: string, tabSize: number, 
     case Verb.POST:
       return generatePost(entityName, tabSize, layerBellow);
     case Verb.PUT:
-      return geeneratePut(entityName, tabSize, layerBellow);
+      return generatePut(entityName, tabSize, layerBellow);
+    case Verb.DELETE:
+      return generateDelete(entityName, tabSize, layerBellow);
   }
 }
 
-export function geeneratePut(entityName: string, tabSize: number, layerBellow?: Layer) {
+export function generateDelete(entityName: string, tabSize: number, layerBellow?: Layer) {
+  const actionLine = getInnerMethodContent(Layer.controller, entityName, Verb.DELETE, 'id', layerBellow, false);
+  const outerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
+  const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
+
+  return `${outerIdentationSpaces}@Delete(':id')
+${outerIdentationSpaces}@HttpCode(HttpStatus.NO_CONTENT)
+${outerIdentationSpaces}delete${entityName}(@Param('id') id: string) {
+${innerIdentationSpaces}${actionLine}
+${outerIdentationSpaces}}`;
+}
+
+export function generatePut(entityName: string, tabSize: number, layerBellow?: Layer) {
   const returnLine = getReturnLine(Layer.controller, entityName, Verb.PUT, `id, update${entityName}Dto`, layerBellow);
   const outerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
   const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
 
-  return `${outerIdentationSpaces}@Put()
+  return `${outerIdentationSpaces}@Put(':id')
 ${outerIdentationSpaces}update${entityName}(@Body() update${entityName}Dto: Update${entityName}Dto, @Param('id') id: string) {
 ${innerIdentationSpaces}${returnLine}
 ${outerIdentationSpaces}}`;
