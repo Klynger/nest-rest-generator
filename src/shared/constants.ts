@@ -34,14 +34,17 @@ export enum ImportType {
 export enum Verb {
   POST = 'POST',
   GET = 'GET',
+  PUT = 'PUT',
 }
 
 export interface VerbsType {
   POST: 'POST';
   GET: 'GET';
+  PUT: 'PUT';
 }
 
 export const Verbs: VerbsType = {
   POST: 'POST',
   GET: 'GET',
+  PUT: 'PUT',
 };
