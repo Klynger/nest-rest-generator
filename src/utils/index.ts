@@ -13,3 +13,11 @@ export function fromCamelToKebab(input: string) {
 export function capitalize(input: string) {
   return input && input.substr(0, 1).toUpperCase() + input.substr(1, input.length);
 }
+
+export function getKeys<T>(obj: Record<string, T>) {
+  return Object.keys(obj);
+}
+
+export function getValues<T>(obj: Record<string, T>) {
+  return getKeys(obj).map(k => obj[k]);
+}
