@@ -3,7 +3,7 @@ import { ControllerGeneratorService } from './controller-generator.service';
 import { CreateControllerDto } from '../shared/models/create-controller.dto';
 
 @Controller('controller')
-export class ControllerGenerator {
+export class ControllerGeneratorController {
   constructor(private readonly controllerGeneratorService: ControllerGeneratorService) {}
 
   @Post()

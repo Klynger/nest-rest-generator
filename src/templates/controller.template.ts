@@ -1,37 +1,8 @@
-import { fromPascalToCamel } from '../utils';
-import { Layer, Verb, ImportType } from '../shared/constants';
 import { pipe, reduce, flatten } from 'ramda';
+import { Layer, Verb, ImportType } from '../shared/constants';
+import { fromPascalToCamel, getKeys, getValues, capitalize } from '../utils';
 import { generateConstructor, getDefaultLayerBellow, getIdentation, DEFAULT_INNER_CLASS_TABS } from './index';
 import { FileImport, LibImport, Import } from './imports.template';
-
-function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
-  return (v: Verb) => {
-    const layerBellowImport: FileImport = {
-      importType: layerBellow,
-      sameFolder: true,
-      namePascalCase: entityName,
-    };
-  
-    switch (v) {
-      case Verb.GET:
-        return [layerBellowImport];
-      case Verb.POST:
-        return [layerBellowImport, {
-          importType: ImportType.dto,
-          namePascalCase: `Create${entityName}`,
-          sameFolder: false,
-        }];
-      case Verb.PUT:
-        return [layerBellowImport, {
-          importType: ImportType.dto,
-          namePascalCase: `Update${entityName}`,
-          sameFolder: false,
-        }];
-      case Verb.DELETE:
-        return [layerBellowImport];
-    }
-  };
-}
 
 function getCommonImportsFromMethod(acc: Record<string, boolean>, cur: Verb) {
   switch (cur) {
@@ -65,8 +36,48 @@ function getCommonImportsFromMethod(acc: Record<string, boolean>, cur: Verb) {
   }
 }
 
-function getKeys(obj: Record<string, boolean>) {
-  return Object.keys(obj);
+function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
+  return (acc: Record<string, FileImport>, v: Verb) => {
+    const layerBellowImportName = `${entityName}${capitalize(layerBellow)}`;
+    const layerBellowImport: FileImport = {
+      importType: layerBellow,
+      sameFolder: true,
+      namePascalCase: layerBellowImportName,
+    };
+
+    switch (v) {
+      case Verb.GET:
+        return {
+          ...acc,
+          layerBellowImportName: layerBellowImport
+        };
+      case Verb.POST:
+        return {
+          ...acc,
+          layerBellowImportName: layerBellowImport,
+          [`Create${entityName}`]: {
+            importType: ImportType.dto,
+            namePascalCase: `Create${entityName}`,
+            sameFolder: false,
+          },
+        };
+      case Verb.PUT:
+        return {
+          ...acc,
+          layerBellowImportName: layerBellowImport,
+          [`Update${entityName}`]: {
+            importType: ImportType.dto,
+            namePascalCase: `Update${entityName}`,
+            sameFolder: false,
+          },
+        };
+      case Verb.DELETE:
+        return {
+          ...acc,
+          layerBellowImportName: layerBellowImport,
+        };
+    }
+  };
 }
 
 export function discoverControllerImports(entityName: string, implementedMethods: Verb[], layerBellow: Layer): Import[] {
@@ -75,7 +86,7 @@ export function discoverControllerImports(entityName: string, implementedMethods
     lib: '@nestjs/common',
     names,
   };
-  const fileImports = implementedMethods.map(getFileImportsByMethod(entityName, layerBellow));
+  const fileImports = pipe(reduce(getFileImportsByMethod(entityName, layerBellow), {}), getValues)(implementedMethods);
   return flatten<Import>([commonImports, fileImports]);
 }
 
