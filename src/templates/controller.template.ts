@@ -1,8 +1,8 @@
 import { pipe, reduce, flatten } from 'ramda';
 import { Layer, Verb, ImportType } from '../shared/constants';
-import { fromPascalToCamel, getKeys, getValues, capitalize } from '../utils';
-import { generateConstructor, getDefaultLayerBellow, getIdentation, DEFAULT_INNER_CLASS_TABS } from './index';
+import { getKeys, getValues, capitalize } from '../utils';
 import { FileImport, LibImport, Import } from './imports.template';
+import { generateConstructor, getIdentation, DEFAULT_INNER_CLASS_TABS, getDefaultMethodActionContent } from '.';
 
 function getCommonImportsFromMethod(acc: Record<string, boolean>, cur: Verb) {
   switch (cur) {
@@ -49,32 +49,32 @@ function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
       case Verb.GET:
         return {
           ...acc,
-          layerBellowImportName: layerBellowImport
+          [layerBellowImportName]: layerBellowImport
         };
       case Verb.POST:
         return {
           ...acc,
-          layerBellowImportName: layerBellowImport,
-          [`Create${entityName}`]: {
+          [layerBellowImportName]: layerBellowImport,
+          [`Create${entityName}${capitalize(ImportType.dto)}`]: {
             importType: ImportType.dto,
-            namePascalCase: `Create${entityName}`,
+            namePascalCase: `Create${entityName}${capitalize(ImportType.dto)}`,
             sameFolder: false,
           },
         };
       case Verb.PUT:
         return {
           ...acc,
-          layerBellowImportName: layerBellowImport,
-          [`Update${entityName}`]: {
+          [layerBellowImportName]: layerBellowImport,
+          [`Update${entityName}${capitalize(ImportType.dto)}`]: {
             importType: ImportType.dto,
-            namePascalCase: `Update${entityName}`,
+            namePascalCase: `Update${entityName}${capitalize(ImportType.dto)}`,
             sameFolder: false,
           },
         };
       case Verb.DELETE:
         return {
           ...acc,
-          layerBellowImportName: layerBellowImport,
+          [layerBellowImportName]: layerBellowImport,
         };
     }
   };
@@ -110,39 +110,8 @@ ${generateMethods(implementedMethods, entityName, tabSize, layerBellow)}
 }`;
 }
 
-function getMethodName(verb: Verb, entityName: string) {
-  switch (verb) {
-    case Verb.GET:
-      return `get${entityName}`;
-    case Verb.POST:
-      return `create${entityName}`;
-    case Verb.PUT:
-      return `update${entityName}`;
-    case Verb.DELETE:
-      return `delete${entityName}`;
-    default:
-      return '';
-  }
-}
-
-function getInnerMethodContent(layer: Layer, entityName: string, verb: Verb, params: string = '', layerBellow?: Layer, shouldReturn: boolean = true) {
-  if (!layerBellow) {
-    return getInnerMethodContent(layer, entityName, verb, params, getDefaultLayerBellow(layer));
-  }
-
-  const entityNameCamelCase = fromPascalToCamel(entityName);
-  const returnText = `${shouldReturn ? 'return ' : ''}`;
-
-  switch (layerBellow) {
-    case Layer.service:
-      return `${returnText}this.${entityNameCamelCase}Service.${getMethodName(verb, entityName)}(${params});`;
-    default:
-      return `${returnText}default value goes here;`;
-  }
-}
-
 function getReturnLine(layer: Layer, entityName: string, verb: Verb, params: string = '', layerBellow?: Layer) {
-  return getInnerMethodContent(layer, entityName, verb, params, layerBellow);
+  return getDefaultMethodActionContent(layer, entityName, verb, params, layerBellow);
 }
 
 export function generateMethod(verb: Verb, entityName: string, tabSize: number, layerBellow?: Layer) {
@@ -159,7 +128,7 @@ export function generateMethod(verb: Verb, entityName: string, tabSize: number, 
 }
 
 export function generateDelete(entityName: string, tabSize: number, layerBellow?: Layer) {
-  const actionLine = getInnerMethodContent(Layer.controller, entityName, Verb.DELETE, 'id', layerBellow, false);
+  const actionLine = getDefaultMethodActionContent(Layer.controller, entityName, Verb.DELETE, 'id', layerBellow, false);
   const outerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
   const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
 
@@ -193,12 +162,13 @@ ${outerIdentationSpaces}}`;
 }
 
 export function generatePost(entityName: string, tabSize: number, layerBellow?: Layer) {
-  const returnLine = getReturnLine(Layer.controller, entityName, Verb.POST, 'id', layerBellow);
+  const dtoName = `create${entityName}Dto`;
+  const returnLine = getReturnLine(Layer.controller, entityName, Verb.POST, dtoName, layerBellow);
   const outerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
   const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
 
   return `${outerIdentationSpaces}@Post()
-${outerIdentationSpaces}create${entityName}(@Body() create${entityName}Dto: Create${entityName}Dto) {
+${outerIdentationSpaces}create${entityName}(@Body() ${dtoName}: ${capitalize(dtoName)}) {
 ${innerIdentationSpaces}${returnLine}
 ${outerIdentationSpaces}}`;
 }
