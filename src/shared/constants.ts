@@ -33,6 +33,7 @@ export enum ImportType {
   module = 'module',
   dto = 'dto',
   repository = 'repository',
+  model = 'model',
 }
 
 export enum Verb {

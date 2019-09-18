@@ -144,8 +144,7 @@ It gonna return the code of a model file as a string. This is an example of a bo
         "typeName": "string[]",
         "importable": false
       },
-      "required": false,
-      "default": []
+      "required": false
     },
     {
       "name": "email",
