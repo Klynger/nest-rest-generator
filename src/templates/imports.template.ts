@@ -1,5 +1,5 @@
 // import { Layer } from '../shared/constants';
-import { fromPascalToKebab } from '../utils';
+import { fromPascalToKebab, capitalize } from '../utils';
 import { ImportType, Layer } from '../shared/constants';
 
 // export function generateImport(fileName: string, type: Layer, sameFolder: boolean) {
@@ -31,7 +31,10 @@ export interface LibImport extends Import {
 }
 
 function generateFileImport({ namePascalCase, importType, sameFolder }: FileImport) {
-  const nameKebabCase = fromPascalToKebab(namePascalCase);
+  // remove import type from name
+  const entityName = namePascalCase.replace(/[A-Z][a-z]+$/, '');
+  const nameKebabCase = fromPascalToKebab(entityName);
+
   if (sameFolder) {
     return `import { ${namePascalCase} } from './${nameKebabCase}.${importType}';`;
 

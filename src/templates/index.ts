@@ -1,6 +1,7 @@
 import { generateImports, Import } from './imports.template';
 import { fromPascalToKebab, fromPascalToCamel } from '../utils';
 import { Layer, Verb, DEFAULT_TAB_SIZE } from '../shared/constants';
+import { generateClass as generateServiceClass } from './service.template';
 import { generateClass as generateControllerClass } from './controller.template';
 
 export const DEFAULT_INNER_CLASS_TABS = 1;
@@ -9,6 +10,8 @@ export function getDefaultLayerBellow(layer: Layer): Layer {
   switch (layer) {
     case Layer.controller:
       return Layer.service;
+    case Layer.service:
+      return Layer.repository;
   }
 }
 
@@ -18,6 +21,46 @@ export function generateConstructor(injectables: string[], tabSize: number) {
   const identationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
 
   return `${identationSpaces}constructor(${constructorParams}) {}`;
+}
+
+function getMethodName(verb: Verb, entityName: string) {
+  switch (verb) {
+    case Verb.GET:
+      return `get${entityName}`;
+    case Verb.POST:
+      return `create${entityName}`;
+    case Verb.PUT:
+      return `update${entityName}`;
+    case Verb.DELETE:
+      return `delete${entityName}`;
+    default:
+      return '';
+  }
+}
+
+export function getDefaultMethodActionContent(
+  layer: Layer,
+  entityName: string,
+  verb: Verb,
+  params: string = '',
+  layerBellow?: Layer,
+  shouldReturn: boolean = true
+) {
+  if (typeof layerBellow === 'undefined') {
+    return getDefaultMethodActionContent(layer, entityName, verb, params, getDefaultLayerBellow(layer));
+  }
+
+  const entityNameCamelCase = fromPascalToCamel(entityName);
+  const returnText = `${shouldReturn ? 'return ' : ''}`;
+
+  switch (layerBellow) {
+    case Layer.service:
+      return `${returnText}this.${entityNameCamelCase}Service.${getMethodName(verb, entityName)}(${params});`;
+    case Layer.repository:
+      return `${returnText}this.${entityNameCamelCase}Repository.${getMethodName(verb, entityName)}(${params});`;
+    default:
+      return `${returnText}'default value goes here';`;
+  }
 }
 
 function getAnnotation(layer: Layer, entityName: string) {
@@ -39,7 +82,6 @@ export function getIdentation(tabSize: number, quantTabs: number) {
   return getIdentationSpaces(quantTabs * tabSize);
 }
 
-
 export interface MountLayerParams {
   entityName: string;
   layer: Layer;
@@ -50,30 +92,43 @@ export interface MountLayerParams {
   imports: Import[];
 }
 
-function discoverImports() {
-
-}
-
-export function mountLayerFile(params: MountLayerParams) {
+function getClassCode(params: MountLayerParams) {
   const {
     layer,
     entityName,
-    imports,
     layerBellow,
     injectables,
     implementedMethods,
     tabSize = DEFAULT_TAB_SIZE,
   } = params;
 
-  if (imports.length > 0) {
-    return `${generateImports(imports)}
+  switch (layer) {
+    case Layer.controller:
+      return generateControllerClass(entityName, implementedMethods, injectables, tabSize, layerBellow);
+    case Layer.service:
+      return generateServiceClass(entityName, implementedMethods, injectables, tabSize, layerBellow);
+    default:
+      return '';
+  }
+}
 
-${getAnnotation(layer, entityName)}
-${generateControllerClass(entityName, implementedMethods, injectables, tabSize, layerBellow)}
+export function mountLayerFile(params: MountLayerParams) {
+  const { layer, imports, entityName } = params;
+  const classCode = getClassCode(params);
+
+  let importsCode = '';
+
+  if (imports.length > 0) {
+    importsCode = generateImports(imports) + '\n\n';
+  }
+
+  if (imports.length > 0) {
+    return `${importsCode}${getAnnotation(layer, entityName)}
+${classCode}
 `;
   }
 
   return `${getAnnotation(layer, entityName)}
-${generateControllerClass(entityName, implementedMethods, injectables, tabSize, layerBellow)}
+${classCode}
 `;
 }

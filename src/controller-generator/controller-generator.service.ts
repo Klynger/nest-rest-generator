@@ -9,7 +9,7 @@ import { mountLayerFile, MountLayerParams, getDefaultLayerBellow } from '../temp
 export class ControllerGeneratorService {
   generateController({ entityName, implementedMethods, layerBellow }: CreateControllerDto) {
 
-    if (!layerBellow) {
+    if (typeof layerBellow === 'undefined') {
       layerBellow = getDefaultLayerBellow(Layer.controller);
     }
 

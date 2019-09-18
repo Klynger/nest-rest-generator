@@ -10,18 +10,21 @@ export interface LayersType {
   service: 'service';
   controller: 'controller';
   module: 'module';
+  repository: 'repository';
 }
 
 export const Layers: LayersType = {
   service: 'service',
   controller: 'controller',
   module: 'module',
+  repository: 'repository',
 };
 
 export enum Layer {
   service = 'service',
   controller = 'controller',
   module = 'module',
+  repository = 'repository',
 }
 
 export enum ImportType {
@@ -29,6 +32,7 @@ export enum ImportType {
   controller = 'controller',
   module = 'module',
   dto = 'dto',
+  repository = 'repository',
 }
 
 export enum Verb {
