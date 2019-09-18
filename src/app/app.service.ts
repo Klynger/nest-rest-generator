@@ -1,5 +1,5 @@
 import { Subject } from 'rxjs';
-import { APP_NAME, GeneratorStatus } from '../shared/constants';
+import { APP_NAME, GeneratorStatus, WHOAMI } from '../shared/constants';
 import { Injectable, OnModuleInit, OnModuleDestroy, HttpService } from '@nestjs/common';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class AppService implements OnModuleInit, OnModuleDestroy {
     }).subscribe();
   }
 
-  getHello(): string {
-    return 'Hello World!';
+  whoami() {
+    return WHOAMI;
   }
 }

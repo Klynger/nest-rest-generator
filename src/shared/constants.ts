@@ -56,3 +56,19 @@ export const Verbs: VerbsType = {
   PUT: 'PUT',
   DELETE: 'DELETE',
 };
+
+export interface Whoami {
+  apiType: string;
+  controller: boolean;
+  model: boolean;
+  repository: boolean;
+  service: boolean;
+}
+
+export const WHOAMI = {
+  apiType: 'REST',
+  controller: true,
+  model: true,
+  repository: false,
+  service: true
+};
