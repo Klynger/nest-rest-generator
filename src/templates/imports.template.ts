@@ -38,7 +38,7 @@ function generateFileImport({ namePascalCase, importType, sameFolder }: FileImpo
   if (sameFolder) {
     return `import { ${namePascalCase} } from './${nameKebabCase}.${importType}';`;
 
-  } else if (importType === ImportType.dto) {
+  } else if (importType === ImportType.dto || importType === ImportType.model) {
     const dtoPrefixRegex = /([a-z]+)-/;
     const entityNameKebab = nameKebabCase.replace(dtoPrefixRegex, '');
     return `import { ${namePascalCase} } from '../shared/models/${entityNameKebab}/${nameKebabCase}.${importType}';`;

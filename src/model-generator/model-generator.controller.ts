@@ -1,12 +1,13 @@
-import { Controller, Post } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { ModelGeneratorService } from './model-generator.service';
+import { CreateModelDto } from '../shared/models/create-model.dto';
 
 @Controller('model')
 export class ModelGeneratorController {
   constructor(private readonly modelGeneratorService: ModelGeneratorService) {}
 
   @Post()
-  public createModel() {
-    return this.modelGeneratorService.generateModel();
+  public createModel(@Body() createModelDto: CreateModelDto) {
+    return this.modelGeneratorService.generateModel(createModelDto);
   }
 }
