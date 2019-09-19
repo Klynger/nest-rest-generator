@@ -23,6 +23,7 @@ export interface FileImport extends Import {
   sameFolder?: boolean;
   importType: ImportType | Layer;
   namePascalCase: string;
+  moduleImport?: boolean;
 }
 
 export interface LibImport extends Import {

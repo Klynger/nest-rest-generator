@@ -69,8 +69,8 @@ function getAnnotation(layer: Layer, entityName: string) {
       return `@Controller('${fromPascalToKebab(entityName)}')`;
     case Layer.service:
       return '@Injectable()';
-    case Layer.module:
-      return '@Module()';
+    default:
+      return '';
   }
 }
 
