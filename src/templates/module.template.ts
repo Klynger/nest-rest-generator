@@ -1,7 +1,7 @@
 import { identity, flatten } from 'ramda';
-import { FileImport, generateImports } from './imports.template';
 import { capitalize, addSuffix } from '../utils';
 import { getIdentation, DEFAULT_INNER_CLASS_TABS } from '.';
+import { FileImport, generateImports } from './imports.template';
 import { CreateModuleDto } from '../shared/models/create-module.dto';
 import { Layer, DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 

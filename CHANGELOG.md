@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- All routes return the type `FileGenerated` now.
+
 ## [0.8.0] - 2019-09-18
 
 ### Added

@@ -57,6 +57,11 @@ export const Verbs: VerbsType = {
   DELETE: 'DELETE',
 };
 
+export interface FileGenerated {
+  code: string;
+  path: string;
+}
+
 export interface Whoami {
   apiType: string;
   controller: boolean;

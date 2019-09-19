@@ -1,6 +1,6 @@
 import { generateImports, Import } from './imports.template';
 import { fromPascalToKebab, fromPascalToCamel } from '../utils';
-import { Layer, Verb, DEFAULT_TAB_SIZE } from '../shared/constants';
+import { Layer, Verb, DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 import { generateClass as generateServiceClass } from './service.template';
 import { generateClass as generateControllerClass } from './controller.template';
 
@@ -80,6 +80,16 @@ export function getIdentationSpaces(quantSpaces: number) {
 
 export function getIdentation(tabSize: number, quantTabs: number) {
   return getIdentationSpaces(quantTabs * tabSize);
+}
+
+export function getFilePath(entityName: string, fileType: FileType) {
+  const kebabEntityName = fromPascalToKebab(entityName);
+
+  if (fileType === FileType.dto || fileType === FileType.model) {
+    return `src/shared/${kebabEntityName}/${kebabEntityName}.${fileType}`;
+  }
+
+  return `src/${kebabEntityName}/${kebabEntityName}.${fileType}`;
 }
 
 export interface MountLayerParams {

@@ -1,9 +1,9 @@
 import { capitalize } from '../utils';
-import { Layer } from '../shared/constants';
 import { Injectable } from '@nestjs/common';
+import { Layer, FileType } from '../shared/constants';
 import { discoverControllerImports } from '../templates/controller.template';
 import { CreateControllerDto } from '../shared/models/create-controller.dto';
-import { mountLayerFile, MountLayerParams, getDefaultLayerBellow } from '../templates/index';
+import { mountLayerFile, MountLayerParams, getDefaultLayerBellow, getFilePath } from '../templates/index';
 
 @Injectable()
 export class ControllerGeneratorService {
@@ -26,5 +26,9 @@ export class ControllerGeneratorService {
     };
     const fileContent = mountLayerFile(params);
     return fileContent;
+  }
+
+  getFilePath(entityName: string) {
+    return getFilePath(entityName, FileType.module);
   }
 }
