@@ -1,5 +1,5 @@
 import { pipe, reduce, flatten } from 'ramda';
-import { Layer, Verb, ImportType } from '../shared/constants';
+import { Layer, Verb, FileType } from '../shared/constants';
 import { getKeys, getValues, capitalize } from '../utils';
 import { FileImport, LibImport, Import } from './imports.template';
 import { generateConstructor, getIdentation, DEFAULT_INNER_CLASS_TABS, getDefaultMethodActionContent } from '.';
@@ -40,7 +40,7 @@ function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
   return (acc: Record<string, FileImport>, v: Verb) => {
     const layerBellowImportName = `${entityName}${capitalize(layerBellow)}`;
     const layerBellowImport: FileImport = {
-      importType: layerBellow,
+      fileType: layerBellow,
       sameFolder: true,
       namePascalCase: layerBellowImportName,
     };
@@ -55,9 +55,9 @@ function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
         return {
           ...acc,
           [layerBellowImportName]: layerBellowImport,
-          [`Create${entityName}${capitalize(ImportType.dto)}`]: {
-            importType: ImportType.dto,
-            namePascalCase: `Create${entityName}${capitalize(ImportType.dto)}`,
+          [`Create${entityName}${capitalize(FileType.dto)}`]: {
+            fileType: FileType.dto,
+            namePascalCase: `Create${entityName}${capitalize(FileType.dto)}`,
             sameFolder: false,
           },
         };
@@ -65,9 +65,9 @@ function getFileImportsByMethod(entityName: string, layerBellow: Layer) {
         return {
           ...acc,
           [layerBellowImportName]: layerBellowImport,
-          [`Update${entityName}${capitalize(ImportType.dto)}`]: {
-            importType: ImportType.dto,
-            namePascalCase: `Update${entityName}${capitalize(ImportType.dto)}`,
+          [`Update${entityName}${capitalize(FileType.dto)}`]: {
+            fileType: FileType.dto,
+            namePascalCase: `Update${entityName}${capitalize(FileType.dto)}`,
             sameFolder: false,
           },
         };

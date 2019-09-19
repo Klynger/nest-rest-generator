@@ -1,5 +1,5 @@
 import { pipe, reduce, flatten } from 'ramda';
-import { Layer, Verb, ImportType } from '../shared/constants';
+import { Layer, Verb, FileType } from '../shared/constants';
 import { capitalize, fromPascalToCamel, getValues } from '../utils';
 import { LibImport, Import, FileImport } from './imports.template';
 import { generateConstructor, getDefaultMethodActionContent, getIdentation, DEFAULT_INNER_CLASS_TABS } from '.';
@@ -10,18 +10,18 @@ function getFileImportsByMethod(entityName: string) {
       case Verb.POST:
         return {
           ...acc,
-          [`Create${entityName}${capitalize(ImportType.dto)}`]: {
-            importType: ImportType.dto,
-            namePascalCase: `Create${entityName}${capitalize(ImportType.dto)}`,
+          [`Create${entityName}${capitalize(FileType.dto)}`]: {
+            fileType: FileType.dto,
+            namePascalCase: `Create${entityName}${capitalize(FileType.dto)}`,
             sameFolder: false,
           },
         };
       case Verb.PUT:
         return {
           ...acc,
-          [`Update${entityName}${capitalize(ImportType.dto)}`]: {
-            importType: ImportType.dto,
-            namePascalCase: `Update${entityName}${capitalize(ImportType.dto)}`,
+          [`Update${entityName}${capitalize(FileType.dto)}`]: {
+            fileType: FileType.dto,
+            namePascalCase: `Update${entityName}${capitalize(FileType.dto)}`,
             sameFolder: false,
           },
         };
@@ -45,7 +45,7 @@ export function discoverServiceImports(entityName: string, implementedMethods: V
   const layerBellowImport: FileImport[] = [];
   if (layerBellow) {
     layerBellowImport.push({
-      importType: layerBellow,
+      fileType: layerBellow,
       sameFolder: true,
       namePascalCase: `${entityName}${capitalize(layerBellow)}`,
     });

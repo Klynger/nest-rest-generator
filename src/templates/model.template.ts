@@ -1,6 +1,6 @@
 import { pipe } from 'ramda';
 import { DEFAULT_INNER_CLASS_TABS, getIdentation } from '.';
-import { DEFAULT_TAB_SIZE, ImportType } from '../shared/constants';
+import { DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 import { Import, FileImport, generateImports } from './imports.template';
 import { CreateModelDto, ModelAttribute, ImportableModelAttribute } from '../shared/models/create-model.dto';
 
@@ -43,7 +43,7 @@ function transformToEntityName(importableTypeName: string) {
 
 function transformToImports(entityName: string): FileImport {
   return {
-    importType: ImportType.model,
+    fileType: FileType.model,
     sameFolder: false,
     namePascalCase: entityName,
   };
