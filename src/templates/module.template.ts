@@ -3,15 +3,15 @@ import { FileImport, generateImports } from './imports.template';
 import { capitalize, addSuffix } from '../utils';
 import { getIdentation, DEFAULT_INNER_CLASS_TABS } from '.';
 import { CreateModuleDto } from '../shared/models/create-module.dto';
-import { Layer, DEFAULT_TAB_SIZE, ImportType } from '../shared/constants';
+import { Layer, DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 
-function getImports(entityName: string, importType: ImportType) {
+function getImports(entityName: string, fileType: FileType) {
   return (importName: string): FileImport => {
     return {
-      importType,
+      fileType,
       moduleImport: true,
       sameFolder: importName === entityName,
-      namePascalCase: `${importName}${capitalize(importType)}`,
+      namePascalCase: `${importName}${capitalize(fileType)}`,
     };
   };
 }
@@ -23,10 +23,10 @@ export function discoverModuleImports(
   repositories: string[] = [],
   modules: string[] = [],
 ) {
-  const controllersImports = controllers.map(getImports(entityName, ImportType.controller));
-  const servicesImports = services.map(getImports(entityName, ImportType.service));
-  const repositoriesImports = repositories.map(getImports(entityName, ImportType.repository));
-  const modulesImports = modules.map(getImports(entityName, ImportType.module));
+  const controllersImports = controllers.map(getImports(entityName, FileType.controller));
+  const servicesImports = services.map(getImports(entityName, FileType.service));
+  const repositoriesImports = repositories.map(getImports(entityName, FileType.repository));
+  const modulesImports = modules.map(getImports(entityName, FileType.module));
 
   return flatten([controllersImports, servicesImports, repositoriesImports, modulesImports]);
 }
@@ -53,8 +53,8 @@ function generateModuleAnnotation(
     const transformFn = (type: 'service' | 'repository') =>
       (entityName: string) => `${entityName}${capitalize(type)}`;
     const injectablesStr = services
-      .map(transformFn(ImportType.service))
-      .concat(repositories.map(transformFn(ImportType.repository)))
+      .map(transformFn(FileType.service))
+      .concat(repositories.map(transformFn(FileType.repository)))
       .join(', ');
     injectablesCode = `injectables: [${injectablesStr}],`;
   }

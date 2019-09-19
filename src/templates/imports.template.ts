@@ -1,6 +1,6 @@
 // import { Layer } from '../shared/constants';
 import { fromPascalToKebab, capitalize } from '../utils';
-import { ImportType, Layer } from '../shared/constants';
+import { FileType, Layer } from '../shared/constants';
 
 // export function generateImport(fileName: string, type: Layer, sameFolder: boolean) {
 //   const prefix = sameFolder ? `./${fileName}` : `../${fileName}/${fileName}`;
@@ -21,7 +21,7 @@ export interface Import {}
 
 export interface FileImport extends Import {
   sameFolder?: boolean;
-  importType: ImportType | Layer;
+  fileType: FileType | Layer;
   namePascalCase: string;
   moduleImport?: boolean;
 }
@@ -31,21 +31,21 @@ export interface LibImport extends Import {
   lib: string;
 }
 
-function generateFileImport({ namePascalCase, importType, sameFolder }: FileImport) {
+function generateFileImport({ namePascalCase, fileType, sameFolder }: FileImport) {
   // remove import type from name
   const entityName = namePascalCase.replace(/[A-Z][a-z]+$/, '');
   const nameKebabCase = fromPascalToKebab(entityName);
 
   if (sameFolder) {
-    return `import { ${namePascalCase} } from './${nameKebabCase}.${importType}';`;
+    return `import { ${namePascalCase} } from './${nameKebabCase}.${fileType}';`;
 
-  } else if (importType === ImportType.dto || importType === ImportType.model) {
+  } else if (fileType === FileType.dto || fileType === FileType.model) {
     const dtoPrefixRegex = /([a-z]+)-/;
     const entityNameKebab = nameKebabCase.replace(dtoPrefixRegex, '');
-    return `import { ${namePascalCase} } from '../shared/models/${entityNameKebab}/${nameKebabCase}.${importType}';`;
+    return `import { ${namePascalCase} } from '../shared/models/${entityNameKebab}/${nameKebabCase}.${fileType}';`;
 
   }
-  return `import { ${namePascalCase} } from '../${nameKebabCase}/${nameKebabCase}.${importType}';`;
+  return `import { ${namePascalCase} } from '../${nameKebabCase}/${nameKebabCase}.${fileType}';`;
 }
 
 function generateLibImport({ lib, names }: LibImport) {

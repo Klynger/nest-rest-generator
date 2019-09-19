@@ -27,7 +27,7 @@ export enum Layer {
   repository = 'repository',
 }
 
-export enum ImportType {
+export enum FileType {
   service = 'service',
   controller = 'controller',
   module = 'module',
