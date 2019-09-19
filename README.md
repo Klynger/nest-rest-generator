@@ -81,10 +81,11 @@ Returns a JSON specifying what layers of a REST API for a Modal the app can gene
 ```json
 {
   "apiType": "REST",
-  "controller": true,
   "model": true,
-  "repository": false,
-  "service": true
+  "module": true,
+  "service": true,
+  "controller": true,
+  "repository": false
 }
 ```
 
@@ -115,6 +116,20 @@ It gonna return the code of a service file as a string. This is an example of a 
   "implementedMethods": ["POST", "GET", "PUT"],
   "entityName": "User",
   "layerBellow": null
+}
+```
+
+#### Generate module
+
+`POST /module`
+
+```json
+{
+	"entityName": "User",
+	"controllers": ["User"],
+	"services": ["User", "Product"],
+	"repositories": ["User"],
+	"modules": ["Product"]
 }
 ```
 

@@ -66,9 +66,10 @@ export interface Whoami {
 }
 
 export const WHOAMI = {
+  model: true,
+  module: true,
+  service: true,
   apiType: 'REST',
   controller: true,
-  model: true,
   repository: false,
-  service: true
 };

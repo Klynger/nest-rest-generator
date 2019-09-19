@@ -25,3 +25,7 @@ export function getKeys<T>(obj: Record<string, T>) {
 export function getValues<T>(obj: Record<string, T>) {
   return getKeys(obj).map(k => obj[k]);
 }
+
+export function addSuffix(suffix: string, separator: string = '') {
+  return (str: string) => `${str}${separator}${suffix}`;
+}
