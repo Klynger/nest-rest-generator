@@ -1,20 +1,5 @@
-// import { Layer } from '../shared/constants';
-import { fromPascalToKebab, capitalize } from '../utils';
+import { fromPascalToKebab } from '../utils';
 import { FileType, Layer } from '../shared/constants';
-
-// export function generateImport(fileName: string, type: Layer, sameFolder: boolean) {
-//   const prefix = sameFolder ? `./${fileName}` : `../${fileName}/${fileName}`;
-//   switch (type) {
-//     case Layer.controller:
-//       return `${prefix}.controller`;
-//     case Layer.service:
-//       return  `${prefix}.service`;
-//     case Layer.module:
-//       return `${prefix}.module`;
-//     default:
-//       return '';
-//   }
-// }
 
 // tslint:disable-next-line: no-empty-interface
 export interface Import {}
