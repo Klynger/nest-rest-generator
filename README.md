@@ -23,7 +23,9 @@
   - [Specific routes](#specific-routes)
     - [Generate controller](#generate-controller)
     - [Generate service](#generate-service)
+    - [Generate module](#generate-module)
     - [Generate model](#generate-model)
+    - [Generate static files](#generate-static-files)
 
 ## Description
 
@@ -174,3 +176,9 @@ It gonna return the code of a model file as a string. This is an example of a bo
   ]
 }
 ```
+
+#### Generate static files
+
+`GET /static-file`
+
+It gonna return all static files necessary to create a project

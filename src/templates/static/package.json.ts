@@ -1,9 +1,9 @@
-export const code = (projectName: string) => `{
-  "name": "my-blog",
-  "version": "0.3.2",
-  "description": "This is an example project of what the create-backend-app must generate if receives a specific configuration",
-  "author": "Rafael Klynger",
-  "license": "MIT",
+export const code = `{
+  "name": "",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "license": "",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
     "format": "prettier --write \"src/**/*.ts\"",
