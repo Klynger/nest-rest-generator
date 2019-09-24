@@ -12,6 +12,6 @@ export class ModelGeneratorService {
   }
 
   getFilePath(entityName: string) {
-    return getFilePath(entityName, FileType.module);
+    return getFilePath(entityName, FileType.model);
   }
 }

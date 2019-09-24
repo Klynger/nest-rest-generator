@@ -4,4 +4,4 @@ export const code = `{
 }
 `;
 
-export const path = './tsconfig.build.json.ts';
+export const path = 'tsconfig.build.json.ts';

@@ -16,4 +16,4 @@ describe('AppController (e2e)', () => {
 });
 `;
 
-export const path = './test/app.e2e-spec.ts';
+export const path = 'test/app.e2e-spec.ts';

@@ -4,4 +4,4 @@ export const code = `{
 }
 `;
 
-export const path = './.prettierrc';
+export const path = '.prettierrc';

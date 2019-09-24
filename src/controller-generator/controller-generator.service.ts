@@ -29,6 +29,6 @@ export class ControllerGeneratorService {
   }
 
   getFilePath(entityName: string) {
-    return getFilePath(entityName, FileType.module);
+    return getFilePath(entityName, FileType.controller);
   }
 }
