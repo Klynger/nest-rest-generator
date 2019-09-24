@@ -34,4 +34,4 @@ lerna-debug.log*
 !.vscode/extensions.json
 `;
 
-export const path = './.gitignore';
+export const path = '.gitignore';

@@ -86,10 +86,10 @@ export function getFilePath(entityName: string, fileType: FileType) {
   const kebabEntityName = fromPascalToKebab(entityName);
 
   if (fileType === FileType.dto || fileType === FileType.model) {
-    return `src/shared/${kebabEntityName}/${kebabEntityName}.${fileType}`;
+    return `src/shared/${kebabEntityName}/${kebabEntityName}.${fileType}.ts`;
   }
 
-  return `src/${kebabEntityName}/${kebabEntityName}.${fileType}`;
+  return `src/${kebabEntityName}/${kebabEntityName}.${fileType}.ts`;
 }
 
 export interface MountLayerParams {

@@ -59,4 +59,4 @@ export const code = `{
 }
 `;
 
-export const path = './package.json';
+export const path = 'package.json';

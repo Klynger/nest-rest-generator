@@ -5,4 +5,4 @@ export const code = `{
 }
 `;
 
-export const path = './nest-cli.json';
+export const path = 'nest-cli.json';

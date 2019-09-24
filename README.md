@@ -179,6 +179,6 @@ It gonna return the code of a model file as a string. This is an example of a bo
 
 #### Generate static files
 
-`GET /static-file`
+`GET /static-files`
 
 It gonna return all static files necessary to create a project

@@ -9,4 +9,4 @@ export const code = `{
 }
 `;
 
-export const path = './test/jest-e2e.json';
+export const path = 'test/jest-e2e.json';

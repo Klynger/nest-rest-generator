@@ -6,4 +6,4 @@ export const code = `{
 }
 `;
 
-export const path = './nodemon-debug.json';
+export const path = 'nodemon-debug.json';

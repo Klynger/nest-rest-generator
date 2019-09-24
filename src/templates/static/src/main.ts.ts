@@ -8,4 +8,4 @@ async function bootstrap() {
 bootstrap();
 `;
 
-export const path = './src/main.ts';
+export const path = 'src/main.ts';
