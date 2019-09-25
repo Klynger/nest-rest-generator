@@ -1,19 +1,13 @@
 import { pipe } from 'ramda';
-import { DEFAULT_INNER_CLASS_TABS, getIdentation } from '.';
+import { addIdentationSpacesFn } from '../utils';
 import { DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 import { Import, FileImport, generateImports } from './imports.template';
 import { CreateModelDto, ModelAttribute, ImportableModelAttribute } from '../shared/models/create-model.dto';
 
-function addIdentationSpaces(tabSize: number) {
-  const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
-
-  return (str: string) => `${innerIdentationSpaces}${str}`;
-}
-
 export function generateClass(createModelDto: CreateModelDto, imports: Import[], tabSize: number = DEFAULT_TAB_SIZE) {
   const { attributes, entityName }  = createModelDto;
 
-  const generateAttributeWithIdentation = pipe(generateAttribute, addIdentationSpaces(tabSize));
+  const generateAttributeWithIdentation = pipe(generateAttribute, addIdentationSpacesFn(tabSize));
   const attrs = attributes.map(generateAttributeWithIdentation).join('\n');
   const modelName = `${entityName}Model`;
   let importsCode =  '';

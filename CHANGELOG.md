@@ -6,6 +6,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Generation of update DTOs.
+
+### Changed
+
+- Return of `POST /create` to return the code and the path of the file.
+
+### Fixed
+
+- Path of DTO's files.
+
 ## [0.12.0] - 2019-09-25
 
 ### Added
