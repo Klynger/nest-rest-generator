@@ -5,6 +5,7 @@ import { ModelGeneratorModule } from '../model-generator/model-generator.module'
 import { ModuleGeneratorModule } from '../module-generator/module-generator.module';
 import { ServiceGeneratorModule } from '../service-generator/service-generator.module';
 import { ControllerGeneratorModule } from '../controller-generator/controller-generator.module';
+import { RepositoryGeneratorModule } from '../repository-generator/repository-generator.module';
 import { StaticFileGeneratorModule } from '../static-files-generator/static-file-generator.module';
 
 @Module({
@@ -13,6 +14,7 @@ import { StaticFileGeneratorModule } from '../static-files-generator/static-file
     ModelGeneratorModule,
     ModuleGeneratorModule,
     ServiceGeneratorModule,
+    RepositoryGeneratorModule,
     ControllerGeneratorModule,
     StaticFileGeneratorModule,
   ],

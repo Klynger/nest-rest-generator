@@ -1,7 +1,7 @@
 import { Verb, Layer } from '../constants';
+import { CreateLayerDto } from './create-layer.dto';
 
-export class CreateServiceDto {
+export class CreateServiceDto extends CreateLayerDto {
   implementedMethods: Verb[];
-entityName: string;
-layerBellow?: Layer;
+  layerBellow?: Layer;
 }

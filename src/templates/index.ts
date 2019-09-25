@@ -1,8 +1,9 @@
 import { generateImports, Import } from './imports.template';
 import { fromPascalToKebab, fromPascalToCamel } from '../utils';
-import { Layer, Verb, DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 import { generateClass as generateServiceClass } from './service.template';
+import { Layer, Verb, DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 import { generateClass as generateControllerClass } from './controller.template';
+import { generateClass as generateRepositoryClass } from './repository.template';
 
 export const DEFAULT_INNER_CLASS_TABS = 1;
 
@@ -23,7 +24,7 @@ export function generateConstructor(injectables: string[], tabSize: number) {
   return `${identationSpaces}constructor(${constructorParams}) {}`;
 }
 
-function getMethodName(verb: Verb, entityName: string) {
+export function getMethodName(verb: Verb, entityName: string) {
   switch (verb) {
     case Verb.GET:
       return `get${entityName}`;
@@ -68,6 +69,8 @@ function getAnnotation(layer: Layer, entityName: string) {
     case Layer.controller:
       return `@Controller('${fromPascalToKebab(entityName)}')`;
     case Layer.service:
+      return '@Injectable()';
+    case Layer.repository:
       return '@Injectable()';
     default:
       return '';
@@ -117,6 +120,8 @@ function getClassCode(params: MountLayerParams) {
       return generateControllerClass(entityName, implementedMethods, injectables, tabSize, layerBellow);
     case Layer.service:
       return generateServiceClass(entityName, implementedMethods, injectables, tabSize, layerBellow);
+    case Layer.repository:
+      return generateRepositoryClass(entityName, implementedMethods, tabSize);
     default:
       return '';
   }

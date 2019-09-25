@@ -76,5 +76,5 @@ export const WHOAMI = {
   service: true,
   apiType: 'REST',
   controller: true,
-  repository: false,
+  repository: true,
 };

@@ -1,6 +1,6 @@
 import { pipe, reduce, flatten } from 'ramda';
+import { capitalize, getValues } from '../utils';
 import { Layer, Verb, FileType } from '../shared/constants';
-import { capitalize, fromPascalToCamel, getValues } from '../utils';
 import { LibImport, Import, FileImport } from './imports.template';
 import { generateConstructor, getDefaultMethodActionContent, getIdentation, DEFAULT_INNER_CLASS_TABS } from '.';
 
