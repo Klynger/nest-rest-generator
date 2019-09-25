@@ -30,7 +30,7 @@
 
 ## Description
 
-This application implements a specification REST API to work together with the `create-backend-app-core (TODO)` app.
+This application implements a specification REST API to work together with the [create-backend-app-core](https://github.com/Klynger/create-backend-app-core) app.
 
 ## Running things
 
