@@ -1,3 +1,5 @@
+import { getIdentation, DEFAULT_INNER_CLASS_TABS } from '../templates';
+
 export function fromPascalToKebab(input: string) {
   return fromCamelToKebab(fromPascalToCamel(input));
 }
@@ -28,4 +30,10 @@ export function getValues<T>(obj: Record<string, T>) {
 
 export function addSuffix(suffix: string, separator: string = '') {
   return (str: string) => `${str}${separator}${suffix}`;
+}
+
+export function addIdentationSpacesFn(tabSize: number) {
+  const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
+
+  return (str: string) => `${innerIdentationSpaces}${str}`;
 }

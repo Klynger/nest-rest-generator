@@ -26,6 +26,8 @@
     - [Generate repository](#generate-repository)
     - [Generate module](#generate-module)
     - [Generate model](#generate-model)
+    - [Generate create dto](#generate-create-dto)
+    - [Generate update dto](#generate-update-dto)
     - [Generate static files](#generate-static-files)
 
 ## Description
@@ -71,6 +73,7 @@ $ yarn test:cov
   Nest Rest Generator is [MIT licensed](LICENSE).
 
 ## API description
+
   Summary of the available routes that you can access.
 
 ### Standard routes
@@ -86,6 +89,8 @@ Returns a JSON specifying what layers of a REST API for a Modal the app can gene
   "apiType": "REST",
   "model": true,
   "module": true,
+  "create": true,
+  "update": true,
   "service": true,
   "controller": true,
   "repository": true
@@ -186,6 +191,60 @@ It gonna return the code of a model file as a string. This is an example of a bo
       "name": "password",
       "type": "string",
       "required": true
+    }
+  ]
+}
+```
+
+#### Generate create dto
+
+It is going to return the code of a `Create${entityName}Dto`. This is an example of a body to send:
+
+```json
+{
+  "entityName": "User",
+  "attributes": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "products",
+      "type": "string[]",
+      "required": false
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": true
+    }
+  ]
+}
+```
+
+#### Generate update dto
+
+It is going to return the code of a `Update${entityName}Dto`. This is an example of a body to send:
+
+```json
+{
+  "entityName": "User",
+  "attributes": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true
+    },
+    {
+      "name": "products",
+      "type": "string[]",
+      "required": false
     }
   ]
 }
