@@ -86,13 +86,16 @@ export function getIdentation(tabSize: number, quantTabs: number) {
 }
 
 export function getFilePath(entityName: string, fileType: FileType) {
-  const kebabEntityName = fromPascalToKebab(entityName);
+  const fullKebabEntityName = fromPascalToKebab(entityName);
 
-  if (fileType === FileType.dto || fileType === FileType.model) {
-    return `src/shared/${kebabEntityName}/${kebabEntityName}.${fileType}.ts`;
+  if (fileType === FileType.dto) {
+    const onlyEntityName = fullKebabEntityName.replace(/^[a-z]+-/, '');
+    return `src/shared/${onlyEntityName}/${fullKebabEntityName}.${fileType}.ts`;
+  } else if (fileType === FileType.model) {
+    return `src/shared/${fullKebabEntityName}/${fullKebabEntityName}.${fileType}.ts`;
+  } else {
+    return `src/${fullKebabEntityName}/${fullKebabEntityName}.${fileType}.ts`;
   }
-
-  return `src/${kebabEntityName}/${kebabEntityName}.${fileType}.ts`;
 }
 
 export interface MountLayerParams {
