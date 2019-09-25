@@ -8,6 +8,8 @@ export class CreateGeneratorController {
 
   @Post()
   generateCreateDto(@Body() createCreateDto: CreateCreateDto) {
-    return this.createGeneratorService.generateCreateDto(createCreateDto);
+    const code = this.createGeneratorService.generateCreateDto(createCreateDto);
+    const path = this.createGeneratorService.getFilePath(createCreateDto.entityName);
+    return { code, path };
   }
 }
