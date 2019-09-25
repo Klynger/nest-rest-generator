@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
+import { CreateLayerDto } from './create-layer.dto';
 import { Layers, Verbs, Verb, Layer } from '../constants';
 
-export class CreateControllerDto {
+export class CreateControllerDto extends CreateLayerDto {
   implementedMethods: Verb[];
-  entityName: string;
   layerBellow?: Layer;
 }
 

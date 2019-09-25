@@ -23,6 +23,7 @@
   - [Specific routes](#specific-routes)
     - [Generate controller](#generate-controller)
     - [Generate service](#generate-service)
+    - [Generate repository](#generate-repository)
     - [Generate module](#generate-module)
     - [Generate model](#generate-model)
     - [Generate static files](#generate-static-files)
@@ -87,7 +88,7 @@ Returns a JSON specifying what layers of a REST API for a Modal the app can gene
   "module": true,
   "service": true,
   "controller": true,
-  "repository": false
+  "repository": true
 }
 ```
 
@@ -118,6 +119,19 @@ It gonna return the code of a service file as a string. This is an example of a 
   "implementedMethods": ["POST", "GET", "PUT"],
   "entityName": "User",
   "layerBellow": null
+}
+```
+
+#### Generate repository
+
+`POST /repository`
+
+It is going to return the code of a mocked repository. This is an example of a body to send:
+
+```json
+{
+  "implementedMethods": ["POST", "GET", "PUT", "DELETE"],
+  "entityName": "Product",
 }
 ```
 
