@@ -122,8 +122,9 @@ export function generateClass(entityName: string, implementedMethods: Verb[], in
 
   let constructorCode = '';
   let methodsCode = '';
-  if (hasContructor) {
-    constructorCode = generateConstructor(injectables, tabSize) + '\n\n';
+  if (hasContructor || layerBellow) {
+    const fullInjectables = injectables.concat(layerBellow ? [`${entityName}${capitalize(layerBellow)}`] : []);
+    constructorCode = generateConstructor(fullInjectables, tabSize) + '\n\n';
   }
 
   if (hasMethods) {

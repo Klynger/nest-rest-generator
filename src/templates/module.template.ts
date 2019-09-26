@@ -1,7 +1,7 @@
 import { identity, flatten } from 'ramda';
 import { capitalize, addSuffix } from '../utils';
 import { getIdentation, DEFAULT_INNER_CLASS_TABS } from '.';
-import { FileImport, generateImports } from './imports.template';
+import { FileImport, generateImports, LibImport, Import } from './imports.template';
 import { CreateModuleDto } from '../shared/models/create-module.dto';
 import { Layer, DEFAULT_TAB_SIZE, FileType } from '../shared/constants';
 
@@ -28,7 +28,12 @@ export function discoverModuleImports(
   const repositoriesImports = repositories.map(getImports(entityName, FileType.repository));
   const modulesImports = modules.map(getImports(entityName, FileType.module));
 
-  return flatten([controllersImports, servicesImports, repositoriesImports, modulesImports]);
+  const commonImports: LibImport = {
+    lib: '@nestjs/common',
+    names: ['Module'],
+  };
+
+  return flatten<Import>([commonImports, controllersImports, servicesImports, repositoriesImports, modulesImports]);
 }
 
 function generateModuleAnnotation(
@@ -56,7 +61,7 @@ function generateModuleAnnotation(
       .map(transformFn(FileType.service))
       .concat(repositories.map(transformFn(FileType.repository)))
       .join(', ');
-    injectablesCode = `injectables: [${injectablesStr}],`;
+    injectablesCode = `providers: [${injectablesStr}],`;
   }
 
   if (modules.length > 0) {
