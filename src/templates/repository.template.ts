@@ -6,7 +6,7 @@ import { getMethodName, DEFAULT_INNER_CLASS_TABS, getIdentation } from '.';
 
 function generateGet(entityName: string, tabSize: number) {
   const methodName = getMethodName(Verb.GET, entityName);
-  const returnLine = `return this._mock[id] || null;`;
+  const returnLine = `return this.mock[id] || null;`;
   const outerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS);
   const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
 
@@ -24,12 +24,13 @@ function generateCreate(entityName: string, tabSize: number) {
   const innerObj = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 2);
 
   return `${outerIdentationSpaces}${methodName}(${dtoName}: Create${entityName}Dto) {
-${innerIdentationSpaces}const id = this._getNextId();
+${innerIdentationSpaces}const id = this.getNextId();
 ${innerIdentationSpaces}const ${camelEntityName} = {
 ${innerObj}...${dtoName},
 ${innerObj}id,
 ${innerIdentationSpaces}};
-${innerIdentationSpaces}this._mock[id] = ${camelEntityName};
+
+${innerIdentationSpaces}this.mock[id] = ${camelEntityName};
 ${innerIdentationSpaces}return ${camelEntityName};
 ${outerIdentationSpaces}}`;
 }
@@ -49,12 +50,12 @@ ${innerIdentationSpaces}if (!${camelEntityName}) {
 ${innerLvl2}return null;
 ${innerIdentationSpaces}}
 
-${innerIdentationSpaces}this._mock[id] = {
+${innerIdentationSpaces}this.mock[id] = {
 ${innerLvl2}...${dtoName},
 ${innerLvl2}id,
 ${innerIdentationSpaces}};
 
-${innerIdentationSpaces}return this._mock[id];
+${innerIdentationSpaces}return this.mock[id];
 ${outerIdentationSpaces}}`;
 }
 
@@ -64,7 +65,7 @@ function generateDelete(entityName: string, tabSize: number) {
   const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
 
   return `${outerIdentationSpaces}${methodName}(id: string) {
-${innerIdentationSpaces}delete this._mock[id];
+${innerIdentationSpaces}delete this.mock[id];
 ${outerIdentationSpaces}}`;
 }
 
@@ -73,9 +74,9 @@ function generateGetNextId(entityName: string, tabSize: number) {
   const innerIdentationSpaces = getIdentation(tabSize, DEFAULT_INNER_CLASS_TABS + 1);
   const className = `${entityName}Repository`;
 
-  return `${outerIdentationSpaces}private _getNextId() {
-${innerIdentationSpaces}const availableId = ${className}._idCount.toString();
-${innerIdentationSpaces}${className}._idCount++;
+  return `${outerIdentationSpaces}private getNextId() {
+${innerIdentationSpaces}const availableId = ${className}.idCount.toString();
+${innerIdentationSpaces}${className}.idCount++;
 
 ${innerIdentationSpaces}return availableId;
 ${outerIdentationSpaces}}`;
@@ -156,15 +157,16 @@ export function generateClass(entityName: string, implementedMethods: Verb[], ta
 
   if (methodsCode) {
     return `export class ${entityName}Repository {
-${innerClassSpaces}private static _idCount = 0;
-${innerClassSpaces}private static _mock;
+${innerClassSpaces}private static idCount = 0;
+${innerClassSpaces}private mock;
 
 ${innerClassSpaces}constructor() {
-${innerClassLvl2}this._mock = {};
+${innerClassLvl2}this.mock = {};
 ${innerClassSpaces}}
 
 ${methodsCode}
-}`;
+}
+`;
   }
   return `export class ${entityName}Repository {}`;
 

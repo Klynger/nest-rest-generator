@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Modules not importing `Module` from `@nestjs/common`.
+- Path of `DTOs` and `models` was wrong.
+- Injectables in modules goes in providers instead of injectables.
+- Remove underscore from private variables names to fix lint warnings.
+- Missing injection of repository in services when passing the repository as `layerBellow` to services.
+- Missing `\` in the `package.json` static file.
+- Wrong file name of `tsconfig.build.json`.
+
 ## [0.13.0] - 2019-09-25
 
 ### Added

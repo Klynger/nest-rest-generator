@@ -18,7 +18,8 @@ export function generateClass(createUpdateDto: CreateUpdateDto, tabSize: number)
   if (attributes.length > 0) {
     return `export class ${dtoName} {
 ${attrs}
-}`;
+}
+`;
   }
 
   return `export class ${dtoName} {}`;

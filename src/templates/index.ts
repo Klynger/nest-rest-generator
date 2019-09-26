@@ -90,9 +90,9 @@ export function getFilePath(entityName: string, fileType: FileType) {
 
   if (fileType === FileType.dto) {
     const onlyEntityName = fullKebabEntityName.replace(/^[a-z]+-/, '');
-    return `src/shared/${onlyEntityName}/${fullKebabEntityName}.${fileType}.ts`;
+    return `src/shared/models/${onlyEntityName}/${fullKebabEntityName}.${fileType}.ts`;
   } else if (fileType === FileType.model) {
-    return `src/shared/${fullKebabEntityName}/${fullKebabEntityName}.${fileType}.ts`;
+    return `src/shared/models/${fullKebabEntityName}/${fullKebabEntityName}.${fileType}.ts`;
   } else {
     return `src/${fullKebabEntityName}/${fullKebabEntityName}.${fileType}.ts`;
   }

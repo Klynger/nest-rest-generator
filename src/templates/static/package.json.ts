@@ -6,10 +6,10 @@ export const code = `{
   "license": "",
   "scripts": {
     "build": "rimraf dist && tsc -p tsconfig.build.json",
-    "format": "prettier --write \"src/**/*.ts\"",
+    "format": "prettier --write \\"src/**/*.ts\\"",
     "start": "ts-node -r tsconfig-paths/register src/main.ts",
-    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \"node dist/main.js\"",
-    "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \"node --inspect-brk dist/main.js\"",
+    "start:dev": "tsc-watch -p tsconfig.build.json --onSuccess \\"node dist/main.js\\"",
+    "start:debug": "tsc-watch -p tsconfig.build.json --onSuccess \\"node --inspect-brk dist/main.js\\"",
     "start:prod": "node dist/main.js",
     "lint": "tslint -p tsconfig.json -c tslint.json",
     "test": "jest",
@@ -51,7 +51,7 @@ export const code = `{
     "rootDir": "src",
     "testRegex": ".spec.ts$",
     "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
+      "^.+\\\\.(t|j)s$": "ts-jest"
     },
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
