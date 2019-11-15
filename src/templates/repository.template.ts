@@ -141,7 +141,7 @@ export function discoverImports(entityName: string, implementedMethods: Verb[]):
     getValues,
   )(implementedMethods);
 
-  return flatten<Import>([fileImports, commonImports]);
+  return flatten<Import[]>([fileImports, commonImports]);
 }
 
 export function generateClass(entityName: string, implementedMethods: Verb[], tabSize: number) {

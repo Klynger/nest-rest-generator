@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs';
+import { IGenerator } from 'src/shared/typings';
 import { APP_NAME, GeneratorStatus, WHOAMI } from '../shared/constants';
 import { Injectable, OnModuleInit, OnModuleDestroy, HttpService } from '@nestjs/common';
 
