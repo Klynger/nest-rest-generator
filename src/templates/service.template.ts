@@ -51,7 +51,7 @@ export function discoverServiceImports(entityName: string, implementedMethods: V
     });
   }
 
-  return flatten<Import>([commonImports, fileImports, layerBellowImport]);
+  return flatten<Import[]>([commonImports, fileImports, layerBellowImport]);
 }
 
 function generateCreate(entityName: string, tabSize: number, layerBellow?: Layer) {

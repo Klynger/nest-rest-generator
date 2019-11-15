@@ -33,7 +33,7 @@ export function discoverModuleImports(
     names: ['Module'],
   };
 
-  return flatten<Import>([commonImports, controllersImports, servicesImports, repositoriesImports, modulesImports]);
+  return flatten<Import[]>([commonImports, controllersImports, servicesImports, repositoriesImports, modulesImports]);
 }
 
 function generateModuleAnnotation(

@@ -87,7 +87,7 @@ export function discoverControllerImports(entityName: string, implementedMethods
     names,
   };
   const fileImports = pipe(reduce(getFileImportsByMethod(entityName, layerBellow), {}), getValues)(implementedMethods);
-  return flatten<Import>([commonImports, fileImports]);
+  return flatten<Import[]>([commonImports, fileImports]);
 }
 
 function generateMethods(implementedMethods: Verb[], entityName: string, tabSize: number, layerBellow?: Layer) {
